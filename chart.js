@@ -1,5 +1,6 @@
 Chart = (selector, options) => {
-    // let date = (uts, format = {}) => new Date(uts * 1000).toLocaleDateString(document.documentElement.lang, format);
+    // let uDate = (uts, format = {}) => new Date(uts * 1000).toLocaleDateString(document.documentElement.lang, format);
+    // let jsDate = (d, format = {}) => new Date(d).toLocaleDateString(document.documentElement.lang, format);
 
     let isObject = x => x && typeof x === 'object' && !Array.isArray(x);
 
