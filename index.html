@@ -1,0 +1,48 @@
+<html lang="ar-EG">
+<meta charset="utf-8">
+<style>
+    body {
+        /* background-color: #333333; color: #dddddd; */
+        font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+    canvas {
+        width: 800px;
+        height: 240px;
+        font-size: 10pt;
+        border: 1px dashed blue;
+    }
+</style>
+
+<canvas id="canvas1"></canvas>
+<canvas id="canvas2"></canvas>
+
+<script src="chart.js"></script>
+<script>
+    let data = [
+        {
+            data: [
+                [40, 200], [80, 120], [120, 160], [160, 100], [200, 110], [240, 90],
+            ],
+            // color: 'red',
+        }, {
+            data: [
+                [40, 110], [80, 30], [120, 100], [160, 40], [200, 100], [240, 25],
+            ],
+            // color: 'blue',
+        },
+    ];
+
+        let t0 = Date.now();
+    Chart('#canvas1', {
+        lines: data,
+        xAxis: { title: 'الشهور', min: 0, max: 280, ticks: 40, },
+        yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
+    });
+    Chart('#canvas2', {
+        bars: data,
+        // barSep: 0,
+        xAxis: { title: 'الشهور', min: 0, max: 280, ticks: 40, },
+        yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
+    });
+    console.log(Date.now() - t0);
+</script>
