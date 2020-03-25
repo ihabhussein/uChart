@@ -43,7 +43,6 @@ Chart = (selector, options) => {
         yx = (H - 2 * my) / (options.yAxis.max - options.yAxis.min);
 
         ctx.translate(mx, H - my);
-        ctx.scale(1, -1);
         ctx.textAlign = 'center';
         ctx.lineWidth = 1;
         ctx.lineJoin = 'round';
@@ -60,10 +59,8 @@ Chart = (selector, options) => {
         lineTo(options.xAxis.max, options.yAxis.min);
         ctx.stroke();
 
-        ctx.scale(1, -1);
-        ctx.textBaseline = 'bottom';
-
         // x-axis title
+        ctx.textBaseline = 'bottom';
         ctx.fillText(options.xAxis.title, W / 2 - mx, my);
 
         // y-axis title
@@ -74,49 +71,36 @@ Chart = (selector, options) => {
         ctx.restore();
     };
 
-    let moveTo = (x, y) => ctx.moveTo((x - options.xAxis.min) * xx, (y - options.yAxis.min) * yx);
-    let lineTo = (x, y) => ctx.lineTo((x - options.xAxis.min) * xx, (y - options.yAxis.min) * yx);
+    let moveTo = (x, y) => ctx.moveTo((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx);
+    let lineTo = (x, y) => ctx.lineTo((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx);
     let rect = (x, y, w, h) => {
-        ctx.strokeRect((x - options.xAxis.min) * xx, (y - options.yAxis.min) * yx, w * xx, h * yx);
-        ctx.fillRect((x - options.xAxis.min) * xx, (y - options.yAxis.min) * yx, w * xx, h * yx);
+        ctx.strokeRect((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx, w * xx, -h * yx);
+        ctx.fillRect((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx, w * xx, -h * yx);
     };
     let fillText = (s, x, y) => ctx.fillText(s, (x - options.xAxis.min) * xx, (y - options.yAxis.min) * yx);
 
     let ticks = () => {
         ctx.save();
         ctx.setLineDash([2, 2]);
-        // ctx.lineWidth = 1;
-
         ctx.beginPath();
         if (options.xAxis.ticks > 0) {
+            ctx.textBaseline = 'top';
             for (let x = options.xAxis.min + options.xAxis.ticks; x <= options.xAxis.max; x += options.xAxis.ticks) {
+                fillText(x, x, options.yAxis.min);
                 moveTo(x, options.yAxis.min);
                 lineTo(x, options.yAxis.max);
             }
-        }
-        if (options.yAxis.ticks > 0) {
-            for (let y = options.yAxis.min + options.yAxis.ticks; y <= options.yAxis.max; y += options.yAxis.ticks) {
-                moveTo(options.xAxis.min, y);
-                lineTo(options.xAxis.max, y);
-            }
-        }
-        ctx.stroke();
-
-        ctx.scale(1, -1);
-        if (options.xAxis.ticks > 0) {
-            ctx.textBaseline = 'top';
-            for (let x = options.xAxis.min; x <= options.xAxis.max; x += options.xAxis.ticks) {
-                fillText(x, x, options.yAxis.min);
-            }
-        }
+        };
         if (options.yAxis.ticks > 0) {
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'right';
-            for (let y = options.yAxis.min; y <= options.yAxis.max; y += options.yAxis.ticks) {
+            for (let y = options.yAxis.min + options.yAxis.ticks; y <= options.yAxis.max; y += options.yAxis.ticks) {
                 fillText(y, options.xAxis.min, -y);
-            };
-        }
-
+                moveTo(options.xAxis.min, y);
+                lineTo(options.xAxis.max, y);
+            }
+        };
+        ctx.stroke();
         ctx.restore();
     };
 
