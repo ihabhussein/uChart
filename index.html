@@ -1,4 +1,4 @@
-<html lang="ar-EG">
+<html>
 <meta charset="utf-8">
 <style>
     body {
@@ -15,6 +15,7 @@
 
 <canvas id="canvas1"></canvas>
 <canvas id="canvas2"></canvas>
+<canvas id="canvas3"></canvas>
 
 <script src="chart.js"></script>
 <script>
@@ -32,12 +33,13 @@
         },
     ];
 
-        let t0 = Date.now();
+    let t0 = Date.now();
     Chart('#canvas1', {
         lines: data,
         xAxis: { title: 'الشهور', min: 0, max: 280, ticks: 40, },
         yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
     });
+    console.log(Date.now() - t0);
     Chart('#canvas2', {
         bars: data,
         // barSep: 0,
@@ -45,4 +47,27 @@
         yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
     });
     console.log(Date.now() - t0);
+    Chart('#canvas3', {
+        bars: [{
+            data: [
+                [1584655200000, 200],
+                [1584741600000, 120],
+                [1584828000000, 160],
+                [1584914400000, 100],
+                [1585000800000, 110],
+                [1585087200000,  90],
+                [1585173600000, 100],
+            ],
+        }],
+        barSep: 0,
+        xAxis: {
+            title: 'الايام', min: '2020-03-19', max: '2020-03-27', ticks: '1d',
+            timeSeries: {
+                month: 'short', day: 'numeric',
+            },
+        },
+        yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
+    });
+    console.log(Date.now() - t0);
 </script>
+<!-- 1584568800000 1585260000000 86400000 -->

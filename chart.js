@@ -1,6 +1,5 @@
 Chart = (selector, options) => {
-    // let uDate = (uts, format = {}) => new Date(uts * 1000).toLocaleDateString(document.documentElement.lang, format);
-    // let jsDate = (d, format = {}) => new Date(d).toLocaleDateString(document.documentElement.lang, format);
+    let uDate = (ts, format = {}) => new Date(ts).toLocaleString(document.documentElement.lang || 'en', format);
 
     let isObject = x => x && typeof x === 'object' && !Array.isArray(x);
 
@@ -43,6 +42,12 @@ Chart = (selector, options) => {
         ctx.fillRect((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx, w * xx, -h * yx);
     };
     let fillText = (s, x, y) => ctx.fillText(s, (x - options.xAxis.min) * xx, (y - options.yAxis.min) * yx);
+    let timeUnit = {
+        s: 1000,
+        m: 60 * 1000,
+        h: 60 * 60 * 1000,
+        d: 24 * 60 * 60 * 1000,
+    }
 
     let setup = () => {
         options = merge({
@@ -50,6 +55,18 @@ Chart = (selector, options) => {
             xAxis: {title: '', min: Infinity, max: -Infinity, ticks: undefined},
             yAxis: {title: '', min: Infinity, max: -Infinity, ticks: undefined},
         }, options);
+
+        if (options.xAxis.timeSeries) {
+            if (typeof(options.xAxis.min) == 'string') options.xAxis.min = new Date(options.xAxis.min);
+            if (typeof(options.xAxis.max) == 'string') options.xAxis.max = new Date(options.xAxis.max);
+            if (typeof(options.xAxis.ticks) == 'string') {
+                let re = new RegExp('([0-9]+)([dhms])', 'g');
+                let n = 0, z;
+                while (z = re.exec(options.xAxis.ticks)) n += z[1] * timeUnit[z[2]];
+                options.xAxis.ticks = n;
+            };
+        };
+
         let series = [...options.lines.map(d => d.data), ...options.bars.map(d => d.data)];
         [options.xAxis.min, options.xAxis.max] = limits(series, options.xAxis.min, options.xAxis.max, el => el[0]);
         [options.yAxis.min, options.yAxis.max] = limits(series, options.yAxis.min, options.yAxis.max, el => el[1]);
@@ -93,7 +110,7 @@ Chart = (selector, options) => {
         if (options.xAxis.ticks > 0) {
             ctx.textBaseline = 'top';
             for (let x = options.xAxis.min + options.xAxis.ticks; x <= options.xAxis.max; x += options.xAxis.ticks) {
-                fillText(x, x, options.yAxis.min);
+                fillText(options.xAxis.timeSeries? uDate(x, options.xAxis.timeSeries): x, x, options.yAxis.min);
                 moveTo(x, options.yAxis.min);
                 lineTo(x, options.yAxis.max);
             }
