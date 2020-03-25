@@ -27,16 +27,30 @@ Chart = (selector, options) => {
     };
 
     let canvas = document.querySelector(selector);
+    let W = canvas.width = canvas.clientWidth, H = canvas.height = canvas.clientHeight;
+
     let style = window.getComputedStyle(canvas);
-    let ctx = canvas.getContext('2d');
+    let em = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
     let colors = ['orange', 'limegreen', 'steelblue', 'red', 'yellow',];
-    let W = canvas.width = canvas.clientWidth, H = canvas.height = canvas.clientHeight;
-    let em = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    let mx = 3 * em, my = 3 * em;
-    let xx = 0, yx = 0;
+    let mx = 3 * em, my = 3 * em, xx = 0, yx = 0;
 
-    let setup = (series) => {
+    let ctx = canvas.getContext('2d');
+    let moveTo = (x, y) => ctx.moveTo((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx);
+    let lineTo = (x, y) => ctx.lineTo((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx);
+    let rect = (x, y, w, h) => {
+        ctx.strokeRect((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx, w * xx, -h * yx);
+        ctx.fillRect((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx, w * xx, -h * yx);
+    };
+    let fillText = (s, x, y) => ctx.fillText(s, (x - options.xAxis.min) * xx, (y - options.yAxis.min) * yx);
+
+    let setup = () => {
+        options = merge({
+            lines: [], bars: [],
+            xAxis: {title: '', min: Infinity, max: -Infinity, ticks: undefined},
+            yAxis: {title: '', min: Infinity, max: -Infinity, ticks: undefined},
+        }, options);
+        let series = [...options.lines.map(d => d.data), ...options.bars.map(d => d.data)];
         [options.xAxis.min, options.xAxis.max] = limits(series, options.xAxis.min, options.xAxis.max, el => el[0]);
         [options.yAxis.min, options.yAxis.max] = limits(series, options.yAxis.min, options.yAxis.max, el => el[1]);
 
@@ -71,14 +85,6 @@ Chart = (selector, options) => {
 
         ctx.restore();
     };
-
-    let moveTo = (x, y) => ctx.moveTo((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx);
-    let lineTo = (x, y) => ctx.lineTo((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx);
-    let rect = (x, y, w, h) => {
-        ctx.strokeRect((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx, w * xx, -h * yx);
-        ctx.fillRect((x - options.xAxis.min) * xx, -(y - options.yAxis.min) * yx, w * xx, -h * yx);
-    };
-    let fillText = (s, x, y) => ctx.fillText(s, (x - options.xAxis.min) * xx, (y - options.yAxis.min) * yx);
 
     let ticks = () => {
         ctx.save();
@@ -127,16 +133,9 @@ Chart = (selector, options) => {
         ctx.restore();
     };
 
-    options = merge({
-        lines: [], bars: [],
-        xAxis: {title: '', min: Infinity, max: -Infinity, ticks: undefined},
-        yAxis: {title: '', min: Infinity, max: -Infinity, ticks: undefined},
-    }, options);
-
-    setup([...options.lines.map(d => d.data), ...options.bars.map(d => d.data)]);
+    setup();
     axes();
     ticks();
-
     options.bars.forEach((d, idx) => plotBar(d.data, d.color || colors[idx % colors.length], options.bars.length, idx, options.barSep));
     options.lines.forEach((d, idx) => plotLine(d.data, d.color || colors[idx % colors.length]));
 };
