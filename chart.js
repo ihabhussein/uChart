@@ -147,11 +147,19 @@ Chart = (selector, options) => {
     };
 
     let plotBar = (data, color, n = 1, idx = 0, barSep = 1) => {
-        let w = options.xAxis.ticks / (n + (barSep? 1: 0));
-        let dx = w * (idx - n / 2);
+        let w, dx;
         ctx.save();
         ctx.strokeStyle = style.color;
         ctx.fillStyle = color;
+        {
+            let prev = -Infinity, diff = Infinity;
+            data.forEach(d => {
+                diff = Math.min(diff, d[0] - prev);
+                prev = d[0];
+            });
+            w = diff / (n + (barSep? 1: 0));
+            dx = w * (idx - n / 2);
+        }
         data.forEach(d => rect(d[0] + dx, 0, w, d[1]));
         ctx.restore();
     };
