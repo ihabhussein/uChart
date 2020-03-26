@@ -1,72 +1,81 @@
+<!DOCTYPE html>
 <html>
-<meta charset="utf-8">
-<style>
-    body {
-        /* background-color: #333333; color: #dddddd; */
-        font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    }
-    canvas {
-        width: 800px;
-        height: 240px;
-        font-size: 10pt;
-        border: 1px dashed blue;
-    }
-</style>
+<head>
+    <meta charset="utf-8">
+    <title>μChart Test</title>
+</head>
+<body>
+    <canvas id="canvas1"></canvas>
+    <canvas id="canvas2"></canvas>
+    <canvas id="canvas3"></canvas>
 
-<canvas id="canvas1"></canvas>
-<canvas id="canvas2"></canvas>
-<canvas id="canvas3"></canvas>
-
-<script src="chart.js"></script>
-<script>
-    let data = [
-        {
-            data: [
-                [40, 200], [80, 120], [120, 160], [160, 100], [200, 110], [240, 90],
-            ],
-            // color: 'red',
-        }, {
-            data: [
-                [40, 110], [80, 30], [120, 100], [160, 40], [200, 100], [240, 25],
-            ],
-            // color: 'blue',
-        },
-    ];
-
-    let t0 = Date.now();
-    Chart('#canvas1', {
-        lines: data,
-        xAxis: { title: 'الشهور', min: 0, max: 280, ticks: 40, },
-        yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
-    });
-    console.log(Date.now() - t0);
-    Chart('#canvas2', {
-        bars: data,
-        // barSep: 0,
-        xAxis: { title: 'الشهور', min: 0, max: 280, ticks: 40, },
-        yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
-    });
-    console.log(Date.now() - t0);
-    Chart('#canvas3', {
-        bars: [{
-            data: [
-                ['2020-03-20', 200],
-                ['2020-03-21', 120],
-                ['2020-03-22', 160],
-                ['2020-03-23', 100],
-                ['2020-03-24', 110],
-                ['2020-03-25',  90],
-                ['2020-03-26', 100],
-            ],
-        }],
-        // barSep: 0,
-        xAxis: {
-            title: 'الايام', min: '2020-03-19', max: '2020-03-27', ticks: '2d',
-            timeSeries: {
-                month: 'long', day: 'numeric',
+    <style>
+        body {
+            background-color: #333333; color: #dddddd;
+            font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+        canvas {
+            width: 800px;
+            height: 240px;
+            font-size: 10pt;
+            /* border: 1px dashed blue; */
+        }
+    </style>
+    <script src="chart.js"></script>
+    <script>
+        let series = [
+            {
+                data: [
+                    [40, 200], [80, 120], [120, 160], [160, 100], [200, 110], [240, 90],
+                ],
+                // color: 'red',
+            }, {
+                data: [
+                    [40, 110], [80, 30], [120, 100], [160, 40], [200, 100], [240, 25],
+                ],
+                // color: 'blue',
             },
-        },
-        yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
-    });
-    console.log(Date.now() - t0);
-</script>
+        ];
+
+        let t0 = Date.now();
+        Chart('#canvas1', {
+            lines: series,
+            xAxis: { title: 'الشهور', min: 0, max: 280, ticks: 40, },
+            yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
+        });
+        console.log(Date.now() - t0);
+        Chart('#canvas2', {
+            bars: series,
+            // barSep: 0,
+            xAxis: { title: 'الشهور', min: 0, max: 280, ticks: 40, },
+            yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
+        });
+        console.log(Date.now() - t0);
+        Chart('#canvas3', {
+            bars: [
+                {
+                    data: [
+                        ['2020-03-20', 200],
+                        ['2020-03-21', 120],
+                        ['2020-03-22', 160],
+                        ['2020-03-23', 100],
+                        ['2020-03-24', 110],
+                        ['2020-03-25',  90],
+                        ['2020-03-26', 100],
+                    ],
+                    color: 'red',
+                },
+            ],
+            // barSep: 0,
+            xAxis: {
+                title: 'الايام', min: '2020-03-19', max: '2020-03-27', ticks: '2d',
+                timeSeries: {
+                    month: 'long', day: 'numeric',
+                },
+            },
+            yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
+        });
+        console.log(Date.now() - t0);
+    </script>
+</body>
+</html>
