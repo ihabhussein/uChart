@@ -65,6 +65,12 @@ Chart = (selector, options) => {
                 while (z = re.exec(options.xAxis.ticks)) n += z[1] * timeUnit[z[2]];
                 options.xAxis.ticks = n;
             };
+            options.lines.forEach((s, i) => s.data.forEach((v, j) => {
+                if (typeof(v[0]) == 'string') options.lines[i].data[j][0] = new Date(v[0]).getTime();
+            }));
+            options.bars.forEach((s, i) => s.data.forEach((v, j) => {
+                if (typeof(v[0]) == 'string') options.bars[i].data[j][0] = new Date(v[0]).getTime();
+            }));
         };
 
         let series = [...options.lines.map(d => d.data), ...options.bars.map(d => d.data)];
