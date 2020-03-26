@@ -115,7 +115,7 @@ Chart = (selector, options) => {
         ctx.beginPath();
         if (options.xAxis.ticks > 0) {
             ctx.textBaseline = 'top';
-            for (let x = options.xAxis.min + options.xAxis.ticks; x <= options.xAxis.max; x += options.xAxis.ticks) {
+            for (let x = options.xAxis.min; x <= options.xAxis.max; x += options.xAxis.ticks) {
                 fillText(options.xAxis.timeSeries? uDate(x, options.xAxis.timeSeries): x, x, options.yAxis.min + 3);
                 moveTo(x, options.yAxis.min);
                 lineTo(x, options.yAxis.max);
@@ -124,7 +124,7 @@ Chart = (selector, options) => {
         if (options.yAxis.ticks > 0) {
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'right';
-            for (let y = options.yAxis.min + options.yAxis.ticks; y <= options.yAxis.max; y += options.yAxis.ticks) {
+            for (let y = options.yAxis.min; y <= options.yAxis.max; y += options.yAxis.ticks) {
                 fillText(y, options.xAxis.min - 2, -y);
                 moveTo(options.xAxis.min, y);
                 lineTo(options.xAxis.max, y);
