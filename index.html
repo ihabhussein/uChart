@@ -37,20 +37,24 @@
             },
         ];
 
-        let t0 = Date.now();
+        console.time('canvas1');
         Chart('#canvas1', {
             lines: series,
             xAxis: { title: 'الشهور', min: 0, max: 280, ticks: 40, },
             yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
         });
-        console.log(Date.now() - t0);
+        console.timeEnd('canvas1');
+
+        console.time('canvas2');
         Chart('#canvas2', {
             bars: series,
             // barSep: 0,
             xAxis: { title: 'الشهور', min: 0, max: 280, ticks: 40, },
             yAxis: { title: 'المبيعات', min: 0, max: 250, ticks: 50, },
         });
-        console.log(Date.now() - t0);
+        console.timeEnd('canvas2');
+
+        console.time('canvas3');
         Chart('#canvas3', {
             bars: [
                 {
@@ -164,7 +168,7 @@
             },
             yAxis: { title: 'المبيعات', min: 0, max: 125, ticks: 25, },
         });
-        console.log(Date.now() - t0);
+        console.timeEnd('canvas3');
     </script>
 </body>
 </html>
