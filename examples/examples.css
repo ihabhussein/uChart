@@ -1,0 +1,8 @@
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+canvas {
+    width: 800px;
+    height: 240px;
+    font-size: 10pt;
+}

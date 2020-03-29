@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>μChart Test</title>
+    <link rel="stylesheet" href="examples.css">
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script src="../chart.js"></script>
+    <script>
+        console.time('canvas');
+        Chart('#canvas', {
+            bars: [
+                {
+                    data: [
+                        [40, 200], [80, 120], [120, 160], [160, 100], [200, 110], [240, 90],
+                    ],
+                }, {
+                    data: [
+                        [40, 110], [80, 30], [120, 100], [160, 40], [200, 100], [240, 25],
+                    ],
+                },
+            ],
+            xAxis: { title: 'x-axis', min: 0, max: 280, ticks: 40, },
+            yAxis: { title: 'y-axis', min: 0, max: 250, ticks: 50, },
+        });
+        console.timeEnd('canvas');
+    </script>
+</body>
+</html>
